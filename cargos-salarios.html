@@ -920,7 +920,7 @@ body:has(#portalHome:not(.hidden)) .project-topbar-brand{
 const API='https://evcklqiukwnmgsvwxjbx.supabase.co', KEY='sb_publishable_F0LtkZZucvWovWhzwoDxrA_tkKTfi5o', SESSION='rhperforma_session_v1';
 function redirect(){window.location.replace('index.html')}
 async function check(){
- let s;try{s=JSON.parse(sessionStorage.getItem(SESSION)||'null')}catch{}
+ let s;try{s=JSON.parse(localStorage.getItem(SESSION)||sessionStorage.getItem(SESSION)||'null')}catch{}
  if(!s||!s.token||!s.user||Date.now()>=s.expires_at){redirect();return}
  try{
   const headers={apikey:KEY,Authorization:'Bearer '+s.token};
