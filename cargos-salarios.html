@@ -1193,7 +1193,7 @@ function backManagementToPortal(){
 }
 function futureManagement(){openManagement()}
 
-const SEED={"app":"RH Performa - Cargos e Salários por Pontos","version":"9.17.0","units":[],"departments":[],"statuses":["Pendente","Em andamento","Em revisão","Concluída"],"educations":["Ensino Fundamental Incompleto","Ensino Fundamental Completo","Ensino Médio Incompleto","Ensino Médio Completo","Ensino Superior Cursando","Ensino Superior Completo","Pós-graduação/MBA Cursando","Pós-graduação/MBA Completo","Mestrado Cursando","Mestrado Completo","Doutorado Cursando","Doutorado Completo"],"experiences":[],"factors":[],"evaluations":[],"classes":[],"jobs":[],"employees":[],"research":[],"contractModels":[],"architecture":{"mode":"LINEAR","management":[],"specialist":[]},"researchMarketNames":["Mercado 1","Mercado 2","Mercado 3","Mercado 4","Mercado 5","Mercado 6"],"marketAnalysis":{"source":"mean","selectedModel":"exponential"},"researchFinalized":false,"researchFinalizedAt":null,"researchFinalizedCargoKeys":[],"implementationLocked":false,"settings":{"evaluationType":"Exponencial","salaryAmplitude":0.1,"classProgression":1.2,"salarySteps":10,"modelSalaryStep":1,"frameworkChargesPct":0,"salaryTableCreationYear":new Date().getFullYear()}};
+const SEED={"app":"RH Performa - Cargos e Salários por Pontos","version":"9.17.1","units":[],"departments":[],"statuses":["Pendente","Em andamento","Em revisão","Concluída"],"educations":["Ensino Fundamental Incompleto","Ensino Fundamental Completo","Ensino Médio Incompleto","Ensino Médio Completo","Ensino Superior Cursando","Ensino Superior Completo","Pós-graduação/MBA Cursando","Pós-graduação/MBA Completo","Mestrado Cursando","Mestrado Completo","Doutorado Cursando","Doutorado Completo"],"experiences":[],"factors":[],"evaluations":[],"classes":[],"jobs":[],"employees":[],"research":[],"contractModels":[],"architecture":{"mode":"LINEAR","management":[],"specialist":[]},"researchMarketNames":["Mercado 1","Mercado 2","Mercado 3","Mercado 4","Mercado 5","Mercado 6"],"marketAnalysis":{"source":"mean","selectedModel":"exponential"},"researchFinalized":false,"researchFinalizedAt":null,"researchFinalizedCargoKeys":[],"implementationLocked":false,"settings":{"evaluationType":"Exponencial","salaryAmplitude":0.1,"classProgression":1.2,"salarySteps":10,"modelSalaryStep":1,"frameworkChargesPct":0,"salaryTableCreationYear":new Date().getFullYear()}};
 const STORAGE='rhPerformaPontosV3_14_ZERADO';
 const PROJECT_FORMAT='RH_PERFORMA_PROJECT';
 const PROJECT_FORMAT_VERSION=1;
@@ -1246,7 +1246,7 @@ if(db.management){
 }
 REQUIRED_EDUCATIONS.slice().reverse().forEach(x=>{if(!db.educations.includes(x)) db.educations.unshift(x)});
 saveDb();
-db.version='9.17.0';
+db.version='9.17.1';
 if(!Array.isArray(db.contractModels)) db.contractModels=[];
 const DEFAULT_JOB_COMPLEXITY_LEVELS=[
 'Estagiário',
@@ -5517,6 +5517,10 @@ document.addEventListener('click',function(e){
  // da Implantação. Início, Novo, Abrir, Salvar e Salvar como permanecem ativos.
  if(target.closest('#projectTopBar') || target.classList.contains('project-topbar-btn')) return;
 
+ // O portal inicial não pertence à Implantação; seus atalhos continuam
+ // disponíveis mesmo quando a implantação estiver finalizada.
+ if(target.closest('#portalHome')) return;
+
  // Controles do próprio modal sempre devem continuar funcionando:
  // fechar (X), cancelar/não e confirmação de reabertura.
  if(target.closest('#modal')){
@@ -5570,7 +5574,7 @@ function buildProjectPayload(){
  return {
    format:PROJECT_FORMAT,
    formatVersion:PROJECT_FORMAT_VERSION,
-   appVersion:'9.17.0',
+   appVersion:'9.17.1',
    savedAt:new Date().toISOString(),
    companyLogo:projectCompanyLogo||'',
    data:db
@@ -5682,7 +5686,7 @@ function hydrateProjectData(raw){
  if(!next.management.jobStatus||typeof next.management.jobStatus!=='object')next.management.jobStatus={};
  if(!next.management.snapshotMeta||typeof next.management.snapshotMeta!=='object')next.management.snapshotMeta={};
 
- next.version='9.17.0';
+ next.version='9.17.1';
  return next;
 }
 function refreshWholeAppAfterProjectLoad(){
