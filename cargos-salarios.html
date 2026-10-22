@@ -933,7 +933,7 @@ async function check(){
   document.documentElement.classList.add('rh-module-authorized');
  }catch(e){redirect()}
 }
-window.rhReturnToCentral=function(){window.location.assign('index.html')};
+window.rhReturnToCentral=function(){return window.confirmReturnToCentral?.()};
 check();
 })();
 </script>
@@ -962,7 +962,7 @@ check();
 </div>
 
 <div class="portal-home" id="portalHome">
-  <button class="portal-modules-float" type="button" title="Todos os módulos — em breve" aria-label="Todos os módulos (em breve)" onclick="rhReturnToCentral()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-8h6v8"/></svg></button>
+  <button class="portal-modules-float" type="button" title="Voltar à Central de Módulos" aria-label="Voltar à Central de Módulos" onclick="rhReturnToCentral()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-8h6v8"/></svg></button>
   <button class="portal-settings-btn" type="button" title="Configurações da empresa" onclick="openPortalSettings()">⚙</button>
   <div class="portal-shell portal-shell-v910">
     <section class="portal-hero-v910">
@@ -1193,7 +1193,7 @@ function backManagementToPortal(){
 }
 function futureManagement(){openManagement()}
 
-const SEED={"app":"RH Performa - Cargos e Salários por Pontos","version":"9.17.1","units":[],"departments":[],"statuses":["Pendente","Em andamento","Em revisão","Concluída"],"educations":["Ensino Fundamental Incompleto","Ensino Fundamental Completo","Ensino Médio Incompleto","Ensino Médio Completo","Ensino Superior Cursando","Ensino Superior Completo","Pós-graduação/MBA Cursando","Pós-graduação/MBA Completo","Mestrado Cursando","Mestrado Completo","Doutorado Cursando","Doutorado Completo"],"experiences":[],"factors":[],"evaluations":[],"classes":[],"jobs":[],"employees":[],"research":[],"contractModels":[],"architecture":{"mode":"LINEAR","management":[],"specialist":[]},"researchMarketNames":["Mercado 1","Mercado 2","Mercado 3","Mercado 4","Mercado 5","Mercado 6"],"marketAnalysis":{"source":"mean","selectedModel":"exponential"},"researchFinalized":false,"researchFinalizedAt":null,"researchFinalizedCargoKeys":[],"implementationLocked":false,"settings":{"evaluationType":"Exponencial","salaryAmplitude":0.1,"classProgression":1.2,"salarySteps":10,"modelSalaryStep":1,"frameworkChargesPct":0,"salaryTableCreationYear":new Date().getFullYear()}};
+const SEED={"app":"RH Performa - Cargos e Salários por Pontos","version":"9.17.2","units":[],"departments":[],"statuses":["Pendente","Em andamento","Em revisão","Concluída"],"educations":["Ensino Fundamental Incompleto","Ensino Fundamental Completo","Ensino Médio Incompleto","Ensino Médio Completo","Ensino Superior Cursando","Ensino Superior Completo","Pós-graduação/MBA Cursando","Pós-graduação/MBA Completo","Mestrado Cursando","Mestrado Completo","Doutorado Cursando","Doutorado Completo"],"experiences":[],"factors":[],"evaluations":[],"classes":[],"jobs":[],"employees":[],"research":[],"contractModels":[],"architecture":{"mode":"LINEAR","management":[],"specialist":[]},"researchMarketNames":["Mercado 1","Mercado 2","Mercado 3","Mercado 4","Mercado 5","Mercado 6"],"marketAnalysis":{"source":"mean","selectedModel":"exponential"},"researchFinalized":false,"researchFinalizedAt":null,"researchFinalizedCargoKeys":[],"implementationLocked":false,"settings":{"evaluationType":"Exponencial","salaryAmplitude":0.1,"classProgression":1.2,"salarySteps":10,"modelSalaryStep":1,"frameworkChargesPct":0,"salaryTableCreationYear":new Date().getFullYear()}};
 const STORAGE='rhPerformaPontosV3_14_ZERADO';
 const PROJECT_FORMAT='RH_PERFORMA_PROJECT';
 const PROJECT_FORMAT_VERSION=1;
@@ -1246,7 +1246,7 @@ if(db.management){
 }
 REQUIRED_EDUCATIONS.slice().reverse().forEach(x=>{if(!db.educations.includes(x)) db.educations.unshift(x)});
 saveDb();
-db.version='9.17.1';
+db.version='9.17.2';
 if(!Array.isArray(db.contractModels)) db.contractModels=[];
 const DEFAULT_JOB_COMPLEXITY_LEVELS=[
 'Estagiário',
@@ -5574,7 +5574,7 @@ function buildProjectPayload(){
  return {
    format:PROJECT_FORMAT,
    formatVersion:PROJECT_FORMAT_VERSION,
-   appVersion:'9.17.1',
+   appVersion:'9.17.2',
    savedAt:new Date().toISOString(),
    companyLogo:projectCompanyLogo||'',
    data:db
@@ -5643,6 +5643,21 @@ async function resolveUnsavedBeforeProjectSwitch(){
  if(action==='save')return await saveProjectFile();
  return false;
 }
+// Saída para a Central de Módulos com confirmação de alterações pendentes.
+window.confirmReturnToCentral=async function(){
+ if(projectDirty){
+   const action=await promptUnsavedProjectAction();
+   if(action==='cancel')return;
+   if(action==='save'){
+     const saved=await saveProjectFile();
+     if(!saved)return; // cancelamento ou falha: permanecer nesta tela
+   }else if(action!=='discard')return;
+ }
+ // A escolha de descartar já foi confirmada: evitar o segundo alerta nativo.
+ allowCentralNavigation=true;
+ window.location.assign('index.html');
+};
+let allowCentralNavigation=false;
 function hydrateProjectData(raw){
  if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new Error('Banco de dados do projeto inválido.');
  const base=structuredClone(SEED);
@@ -5686,7 +5701,7 @@ function hydrateProjectData(raw){
  if(!next.management.jobStatus||typeof next.management.jobStatus!=='object')next.management.jobStatus={};
  if(!next.management.snapshotMeta||typeof next.management.snapshotMeta!=='object')next.management.snapshotMeta={};
 
- next.version='9.17.1';
+ next.version='9.17.2';
  return next;
 }
 function refreshWholeAppAfterProjectLoad(){
@@ -5821,7 +5836,7 @@ async function saveProjectFileAs(){
  }
 }
 window.addEventListener('beforeunload',e=>{
- if(!projectDirty)return;
+ if(!projectDirty||allowCentralNavigation)return;
  e.preventDefault();
  e.returnValue='';
 });
