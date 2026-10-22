@@ -1,6 +1,6 @@
 # RH Performa — Central de Módulos
 
-**Versão da Central: V7.1.1** (22/10/2026). Versionamento independente do aplicativo desktop e dos módulos.
+**Versão da Central: V7.1.2** (22/10/2026). Versionamento independente do aplicativo desktop e dos módulos.
 
 Plataforma modular de softwares de Recursos Humanos da **RH Performa**. A Central é uma aplicação web hospedada no GitHub Pages, acessível pelo navegador ou pelo aplicativo desktop para Windows (Electron).
 
@@ -114,8 +114,10 @@ O comando `npm run dist` gera os artefatos na pasta `dist` do projeto Electron. 
 | Integração do módulo | Acesso a `cargos-salarios.html` para usuários licenciados. |
 | Electron Desktop 1.0.0 | Primeira compilação e instalação local do aplicativo Windows, carregando a Central online. |
 | Central V7.1.0 — 21/10/2026 | Botão `Conhecer e adquirir` para quem não tem licença ativa, com link configurável para a página de vendas. |
-| **Central V7.1.1 — 22/10/2026** | Corrigido o estilo do cartão sem licença: botão de compra passa a aparecer roxo e clicável, mantendo os módulos em desenvolvimento bloqueados e falhas de verificação sem acesso. |
+| Central V7.1.1 — 22/10/2026 | Corrigido o estilo do cartão sem licença: botão de compra passa a aparecer roxo e clicável, mantendo os módulos em desenvolvimento bloqueados e falhas de verificação sem acesso. |
+
+| **Central V7.1.2 — 22/10/2026** | Botão de compra em verde (diferente do roxo de acesso), com cursor clicável e sem estilo de bloqueio; mantém a página de vendas no navegador externo e não altera o Electron. |
 
 ---
 
-**RH Performa** — documentação da versão atual da Central. Este README descreve o estado conhecido e testado até 22/10/2026; recursos futuros não devem ser considerados implementados até sua validação.
+**RH Performa** — documentação da versão atual da Central. Este README documenta as alterações preparadas até 22/10/2026; a V7.1.2 ainda precisa ser validada após publicação; recursos futuros não devem ser considerados implementados até sua validação.
