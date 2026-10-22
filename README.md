@@ -1,5 +1,7 @@
 # RH Performa — Central de Módulos
 
+**Versão da Central: V7.1.1** (22/10/2026). Versionamento independente do aplicativo desktop e dos módulos.
+
 Plataforma modular de softwares de Recursos Humanos da **RH Performa**. A Central é uma aplicação web hospedada no GitHub Pages, acessível pelo navegador ou pelo aplicativo desktop para Windows (Electron).
 
 ## Módulos
@@ -97,15 +99,23 @@ O comando `npm run dist` gera os artefatos na pasta `dist` do projeto Electron. 
 - A disponibilidade do módulo depende de autenticação e licença ativa, conforme as regras implementadas.
 - Mudanças no fluxo de compras devem ser testadas também com contas sem licença e com licença ativa.
 
+## Política de versionamento
+
+- **V8.0.0:** mudanças estruturais ou significativas.
+- **V7.1.0:** nova funcionalidade ou melhoria funcional.
+- **V7.1.1:** correção pontual ou pequeno ajuste.
+- Cada alteração gera uma nova versão e uma entrada neste histórico; Central, módulos e Electron têm versões independentes.
+
 ## Histórico resumido
 
-| Marco | Descrição |
+| Versão / marco | Descrição |
 | --- | --- |
 | Central V7 | Central modular com login e validação de licença no Supabase. |
 | Integração do módulo | Acesso a `cargos-salarios.html` para usuários licenciados. |
 | Electron Desktop 1.0.0 | Primeira compilação e instalação local do aplicativo Windows, carregando a Central online. |
-| Atualização comercial — 21/10/2026 | Botão `Conhecer e adquirir` para quem não tem licença ativa, com link configurável para a página de vendas. |
+| Central V7.1.0 — 21/10/2026 | Botão `Conhecer e adquirir` para quem não tem licença ativa, com link configurável para a página de vendas. |
+| **Central V7.1.1 — 22/10/2026** | Corrigido o estilo do cartão sem licença: botão de compra passa a aparecer roxo e clicável, mantendo os módulos em desenvolvimento bloqueados e falhas de verificação sem acesso. |
 
 ---
 
-**RH Performa** — documentação da versão atual da Central. Este README descreve o estado conhecido e testado até 21/10/2026; recursos futuros não devem ser considerados implementados até sua validação.
+**RH Performa** — documentação da versão atual da Central. Este README descreve o estado conhecido e testado até 22/10/2026; recursos futuros não devem ser considerados implementados até sua validação.
